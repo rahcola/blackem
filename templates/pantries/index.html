@@ -1,0 +1,10 @@
+<h1>{{ user }}</h1>
+{% if pantries %}
+  <ul>
+    {% for pantry in pantries %}
+    <li><a href="{{ pantry.id }}">{{ pantry.name }}</a></li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You have no pantries.</p>
+{% endif %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from blackem.products.models import Product
+from products.models import Product
 
 def index(request):
     product_list = Product.objects.all()

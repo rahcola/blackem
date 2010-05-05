@@ -6,5 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('blackem.pantries.views',
     (r'^$', 'index'),
+    (r'^(?P<pantry_id>\d+)$', 'show'),
 )
 

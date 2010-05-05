@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 
-    (r'^product/', include('blackem.products.urls'))
-    (r'^pantry/', include('blackem.pantries.urls'))
+    (r'^products/', include('blackem.products.urls')),
+    (r'^pantries/', include('blackem.pantries.urls')),
 )
 
