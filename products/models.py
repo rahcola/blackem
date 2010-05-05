@@ -17,6 +17,9 @@ class Category(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
+    class Meta:
+        verbose_name_plural = "Categories"
+
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
 

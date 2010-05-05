@@ -5,5 +5,6 @@ from django.conf.urls.defaults import *
 # admin.autodiscover()
 
 urlpatterns = patterns('blackem.products.views',
-    (r'^$', 'index')
+    (r'^$', 'index'),
+    (r'^(?P<product_id>\d+)$', 'show'),
 )
