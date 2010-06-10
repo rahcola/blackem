@@ -1,3 +1,8 @@
 <h1>{{ object }}</h1>
 <p>Valmistaja: {{ object.manufacturer }}</p>
-<p>Kategoria: {{ object.category }}</p>
+<p>Kategoriat:</p>
+<ul>
+  {% for category in object.categories.all %}
+  <li><a href="./categories/{{ category.id }}">{{ category }}</a></li>
+  {% endfor %}
+</ul>

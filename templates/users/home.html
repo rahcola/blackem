@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block page_title %}| Home {% endblock page_title %}
+
+{% block super %}
+<h2>Pantries</h2>
+  <ul>
+    {% for pantry in pantries %}
+    <li><a href="/pantries/{{ pantry.id }}">{{ pantry }}</a></li>
+    {% endfor %}
+  </ul>
+  <p><a href="{% url pantries.views.new %}">Create a new one.</a></p>
+<h2>Shoppinglists</h2>
+{% endblock super %}

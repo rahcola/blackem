@@ -1,0 +1,8 @@
+<h1>Categories</h1>
+{% if object_list %}
+<ul>
+  {% for category in object_list %}
+  <li><a href="{{ category.id }}">{{ category.name }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}

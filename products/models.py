@@ -10,7 +10,7 @@ class Product(models.Model):
         return unicode(self.name)
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
         return unicode(self.name)

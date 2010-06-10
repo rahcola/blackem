@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block page_title %}| new pantry {% endblock page_title %}
+
+{% block super %}
+<form method="post" action="{% url pantries.views.new %}"> {% csrf_token %}
+<table>
+  {{ form.as_table }}
+  <tr>
+    <th><input type="submit" value="Submit" /></th>
+  </tr>
+</table>
+</form>
+{% endblock super %}
