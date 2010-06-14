@@ -6,6 +6,8 @@
     <title>Blackem {% block page_title %}{% endblock %}</title>
   </head>
   <body>
-    {% block super %}Jee{% endblock %}
+    {% if logged %}<a href="{% url logout %}">Logout</a>{% endif %}
+    {% block link_home %}<a href="{% url users.views.home %}">Home</a>{% endblock %}
+    {% block super %}{% endblock %}
   </body>
 </html>

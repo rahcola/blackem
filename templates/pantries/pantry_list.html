@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block super %}
+<ul>
+  {% for pantry in pantries %}
+  <li><a href="{% url pantries.views.detail pantry_id=pantry.id %}">{{ pantry }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock super %}

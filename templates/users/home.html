@@ -2,13 +2,20 @@
 
 {% block page_title %}| Home {% endblock page_title %}
 
+{% block link_home %} {% endblock link_home %}
 {% block super %}
 <h2>Pantries</h2>
   <ul>
     {% for pantry in pantries %}
-    <li><a href="/pantries/{{ pantry.id }}">{{ pantry }}</a></li>
+    <li><a href="{% url pantries.views.detail pantry.id %}">{{ pantry }}</a></li>
     {% endfor %}
   </ul>
   <p><a href="{% url pantries.views.new %}">Create a new one.</a></p>
 <h2>Shoppinglists</h2>
+  <ul>
+    {% for list in lists %}
+    <li><a href="{% url shoppinglists.views.detail list.id %}">{{ list }}</a></li>
+    {% endfor %}
+  </ul>
+  <p><a href="{% url shoppinglists.views.new %}">Create a new one.</a></p>
 {% endblock super %}

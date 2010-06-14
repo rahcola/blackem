@@ -1,8 +1,29 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from users.models import RegistrationForm
 from pantries.models import Pantry
+from shoppinglists.models import Shoppinglist
 
 @login_required
 def home(request):
     pantries = Pantry.objects.filter(owner=request.user)
-    return render_to_response('users/home.html', {'pantries': pantries})
+    lists = Shoppinglist.objects.filter(pantry__owner=request.user)
+    return render_to_response('users/home.html', {'pantries': pantries,
+                                                  'lists': lists,
+                                                  'logged': True})
+
+def register(request):
+    if request.user.is_authenticated():
+        return redirect('blackem.users.views.home')
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blackem.users.views.home')
+    else:
+        form = RegistrationForm()
+    return render_to_response('users/user_form.html',
+                              {'form': form,
+                               'logged': False},
+                              context_instance=RequestContext(request))

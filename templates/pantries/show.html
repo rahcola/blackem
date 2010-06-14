@@ -1,9 +1,0 @@
-<h1>{{ pantry }}</h1>
-{% if contents %}
-  <ul>
-    {% for content in contents %}
-    <li><a href="/products/{{ content.product.id }}">{{ content.product }}</a> {{ content.amount }} {{ content.product.unit }}</li>
-    {% endfor %}
-  </ul>
-{% else %}
-{% endif %}

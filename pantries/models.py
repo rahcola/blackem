@@ -28,3 +28,7 @@ class Content(models.Model):
                                            self.amount,
                                            self.product.unit))
 
+class ContentForm(ModelForm):
+    class Meta:
+        model = Content
+        fields = ('amount',)

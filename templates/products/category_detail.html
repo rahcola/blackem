@@ -1,8 +1,10 @@
+{% extends "base.html" %}
+
+{% block super %}
 <h1>{{ object }}</h1>
-{% if object.product_set %}
 <ul>
   {% for product in object.product_set.all %}
   <li><a href="/products/{{ product.id }}">{{ product }}</a></li>
   {% endfor %}
 </ul>
-{% endif %}
+{% endblock super %}

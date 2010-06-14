@@ -7,10 +7,10 @@ from products.models import Product, Category
 # admin.autodiscover()
 
 product_dict = {
-  'queryset': Product.objects.all(),
+    'queryset': Product.objects.all(),
 }
 category_dict = {
-  'queryset': Category.objects.all(),
+    'queryset': Category.objects.all(),
 }
 
 urlpatterns = patterns('',

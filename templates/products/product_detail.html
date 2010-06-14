@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block super %}
 <h1>{{ object }}</h1>
 <p>Valmistaja: {{ object.manufacturer }}</p>
 <p>Kategoriat:</p>
@@ -6,3 +9,4 @@
   <li><a href="./categories/{{ category.id }}">{{ category }}</a></li>
   {% endfor %}
 </ul>
+{% endblock super %}
