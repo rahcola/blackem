@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm, ModelChoiceField, CharField
+from django import forms
 from blackem.pantries.models import Pantry
 from blackem.products.models import Product
 
@@ -10,11 +10,11 @@ class Shoppinglist(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
-class ShoppinglistForm(ModelForm):
+class ShoppinglistForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('my_user', False)
-        ModelForm.__init__(self, *args, **kwargs)
+        forms.ModelForm.__init__(self, *args, **kwargs)
         self.fields['pantry'].empty_label = None
         if user:
             self.fields['pantry'].queryset = Pantry.objects.filter(owner=user)
@@ -28,7 +28,10 @@ class Item(models.Model):
     amount = models.FloatField()
     bought = models.BooleanField()
 
-class ItemForm(ModelForm):
+class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ('amount',)
+
+class CheckItemForm(forms.Form):
+    bought = forms.BooleanField(required=False)

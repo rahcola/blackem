@@ -4,15 +4,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from pantries.models import Pantry
 from products.models import Category, Product
-from shoppinglists.models import Shoppinglist, Item, ShoppinglistForm, ItemForm
+from shoppinglists.models import Shoppinglist, Item, ShoppinglistForm, ItemForm, CheckItemForm
 
 @login_required
 def detail(request, shoppinglist_id):
-    list = get_object_or_404(Shoppinglist, pantry__owner=request.user,
-                             pk=shoppinglist_id)
-    return render_to_response('shoppinglists/shoppinglist_detail.html',
-                              {'list': list,
-                               'logged': True})
+    if request.method = 'POST':
+        pass
+    else:
+        list = get_object_or_404(Shoppinglist, pantry__owner=request.user,
+                                 pk=shoppinglist_id)
+        return render_to_response('shoppinglists/shoppinglist_detail.html',
+                                  {'list': list,
+                                   'logged': True})
 
 @login_required
 def new(request):
