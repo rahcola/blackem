@@ -7,6 +7,12 @@ from shoppinglists.models import Shoppinglist
 
 @login_required
 def home(request):
+    """Home page.
+
+    List users pantries and shoppinglists. If user has permissions to add
+    products (and categories) pass this info to the template.
+
+    """
     admin = False
     if request.user.has_perm('products.add_product'):
         admin = True
@@ -19,6 +25,11 @@ def home(request):
                                                   'home': True})
 
 def register(request):
+    """Create the user or render the approriate form.
+
+    Users are created without any permissions.
+
+    """
     if request.user.is_authenticated():
         return redirect('blackem.users.views.home')
     if request.method == 'POST':

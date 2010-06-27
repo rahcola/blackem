@@ -9,18 +9,25 @@ from products.models import Product, Category
 
 @login_required
 def list(request):
+    """List all pantries."""
     pantries = get_list_or_404(Pantry, owner=request.user)
     return render_to_response('pantries/pantry_list.html',
                               {'pantries': pantries})
 
 @login_required
 def detail(request, pantry_id):
+    """Give detailed view of the pantry.
+    
+    User can only view their own pantries.
+
+    """
     pantry = get_object_or_404(Pantry, owner=request.user, pk=pantry_id)
     return render_to_response('pantries/pantry_detail.html',
                               {'pantry': pantry})
 
 @login_required
 def new(request):
+    """Create a new pantry or render appropriate form."""
     if request.method == 'POST':
         form = PantryForm(request.POST)
         if form.is_valid():
@@ -35,11 +42,26 @@ def new(request):
 
 @login_required
 def delete(request, pantry_id):
+    """Delete pantry.
+
+    User can only delete their own pantries.
+
+    """
     Pantry.objects.filter(pk=pantry_id, owner=request.user).delete()
     return redirect('blackem.users.views.home')
 
 @login_required
 def add_content(request, pantry_id, category_id=False, product_id=False):
+    """Add content to pantry or render appropriate form.
+
+    Content is prompted in three steps:
+    1. Ask for a category
+    2. Ask for a product in choosen category
+    3. Ask for an amount for the choosen product.
+
+    User can only add contents to their own pantries.
+
+    """
     if request.method == 'POST':
         form = ContentForm(request.POST)
         if form.is_valid():
@@ -77,6 +99,11 @@ def add_content(request, pantry_id, category_id=False, product_id=False):
 
 @login_required
 def delete_content(request, pantry_id, content_id):
+    """Delete content from pantry.
+
+    User can only delete content from their own pantries.
+
+    """
     Content.objects.filter(pk=content_id, pantry__owner=request.user).delete()
     return redirect('pantries.views.detail', pantry_id)
 

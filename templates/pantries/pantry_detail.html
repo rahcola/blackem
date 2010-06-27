@@ -13,9 +13,17 @@
   </a>
   </li>
   {% endfor %}
+  <li>
+  <a href="{% url pantries.views.add_content pantry_id=pantry.id %}">
+    <img class="action_icon" src="/site-media/add_icon.png" alt="add new content" \>
+  </a>
+  </li>
 </ul>
 {% endblock left_col %}
 {% block right_col %}
-<p><a href="{% url pantries.views.add_content pantry_id=pantry.id %}">Add a new product to pantry.</a></p>
-<p><a href="{% url pantries.views.delete pantry_id=pantry.id %}">Delete this pantry.</a></p>
+<ul>
+  <li>
+  <a href="{% url pantries.views.delete pantry_id=pantry.id %}">Delete this pantry.</a>
+  </li>
+</ul>
 {% endblock right_col %}

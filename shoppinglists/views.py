@@ -10,6 +10,12 @@ from shoppinglists.models import Shoppinglist, Item, ShoppinglistForm, ItemForm
 
 @login_required
 def detail(request, shoppinglist_id):
+    """Detailed view of the shoppinglist.
+
+    List all items and give forms to check them as bought. Bought items are
+    added to the pantry of this shoppinglist.
+
+    """
     CheckItemFormSet = modelformset_factory(Item, extra=0, fields=('bought',))
     if request.method == 'POST':
         formset = CheckItemFormSet(request.POST)
@@ -45,6 +51,12 @@ def detail(request, shoppinglist_id):
 
 @login_required
 def new(request):
+    """Create a new shoppinglist or render the appropriate form.
+    
+    Shoppinglist are always bound to a single pantry, to which bough items are
+    added.
+    
+    """
     if request.method == 'POST':
         form = ShoppinglistForm(request.POST, my_user=False)
         if form.is_valid():
@@ -63,11 +75,26 @@ def new(request):
 
 @login_required
 def delete(request, shoppinglist_id):
+    """Delete the shoppinglist.
+
+    User can only delete their own shoppinglists.
+
+    """
     Shoppinglist.objects.filter(pk=shoppinglist_id,
                                 pantry__owner=request.user).delete()
     return redirect('blackem.users.views.home')
 
 def add_item(request, shoppinglist_id, category_id=False, product_id=False):
+    """Add item to shoppinglist.
+
+    Product to add is prompted in three steps:
+    1. Ask for a category.
+    2. Ask for a product in choosen category.
+    3. Ask for an amount for the choosen product.
+
+    User can only add items to their own shoppinglists.
+
+    """
     if request.method == 'POST':
         form = ItemForm(request.POST)
         if form.is_valid():
@@ -107,6 +134,11 @@ def add_item(request, shoppinglist_id, category_id=False, product_id=False):
                               context_instance=RequestContext(request))
 
 def delete_item(request, shoppinglist_id, item_id):
+    """Delete the item from the shoppinglist.
+
+    User can only delete items from their own shoppinglists.
+
+    """
     Item.objects.filter(pk=item_id,
                         shoppinglist__pantry__owner=request.user).delete()
     return redirect('shoppinglists.views.detail', shoppinglist_id)

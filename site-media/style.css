@@ -80,6 +80,11 @@ ul a {
   font-weight: bold;
 }
 
+table a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
 img {
   border: none;
 }

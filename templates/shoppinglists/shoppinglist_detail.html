@@ -39,13 +39,25 @@
   <td>{{ form.id }}{{ form.bought }}</td>
   </tr>
   {% endfor %}
-  <tr><td></td><td><label for="select" form="frm">Select all</label></td><td><input type="checkbox" id="select" onclick="select_all()" /></td></tr>
+  <tr>
+    <td>
+      <a href="{% url shoppinglists.views.add_item shoppinglist_id=list.id %}">
+        <img class="action_icon" src="/site-media/add_icon.png" alt="add new item" \>
+      </a>
+    </td>
+    <td><label for="select" form="frm">Select all</label></td><td><input type="checkbox" id="select" onclick="select_all()" /></td>
+  </tr>
   <tr><td></td><td></td><td><input type="submit" value="Bought" /></td></tr>
 </table>
 </form>
 {% endblock left_col %}
 
 {% block right_col %}
-<p><a href="{% url shoppinglists.views.add_item shoppinglist_id=list.id %}">Add a new item to shoppinglist.</a></p>
-<p><a href="{% url shoppinglists.views.delete shoppinglist_id=list.id %}">Delete this shoppinglist.</a></p>
+<ul>
+<li>
+</li>
+<li>
+<a href="{% url shoppinglists.views.delete shoppinglist_id=list.id %}">Delete this shoppinglist.</a>
+</li>
+</ul>
 {% endblock right_col %}
