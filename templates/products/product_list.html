@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}products{% endblock page_title %}
+
+{% block left_col %}
+<h1>Products</h1>
 <ul>
   {% for product in object_list %}
   <li><a href="{{ product.id }}">{{ product }}</a></li>
   {% endfor %}
 </ul>
-{% endblock super %}
+{% endblock left_col %}

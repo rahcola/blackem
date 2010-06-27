@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block page_title %}modify product{% endblock page_title %}
+
+{% block left_col %}
+<h1>Modify {{ object }}</h1>
+<form method="post" action="{% url products.views.change_product object.id %}"> {% csrf_token %}
+<table>
+  {{ form.as_table }}
+  <tr><th><input type="submit" value="Submit" \></th></tr>
+</table>
+</form>
+{% endblock left_col %}

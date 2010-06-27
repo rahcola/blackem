@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}{{ object }}{% endblock page_title %}
+
+{% block left_col %}
 <h1>{{ object }}</h1>
 <ul>
   {% for product in object.product_set.all %}
   <li><a href="/products/{{ product.id }}">{{ product }}</a></li>
   {% endfor %}
 </ul>
-{% endblock super %}
+{% if admin %}
+<a href="{% url products.views.delete_product object.id %}">Delete</a>
+{% endif %}
+{% endblock left_col %}

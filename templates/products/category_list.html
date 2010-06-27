@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}categories{% endblock page_title %}
+
+{% block left_col %}
 <h1>Categories</h1>
 {% if object_list %}
 <ul>
@@ -9,4 +11,4 @@
   {% endfor %}
 </ul>
 {% endif %}
-{% endblock super %}
+{% endblock left_col %}

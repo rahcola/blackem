@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 
 # Uncomment the next two lines to enable the admin:
@@ -21,3 +22,9 @@ urlpatterns = patterns(
     (r'^shoppinglists/', include('blackem.shoppinglists.urls')),
 )
 
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^site-media/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': '/home/jani/projects/blackem/site-media',
+          'show_indexes': True}),
+    )

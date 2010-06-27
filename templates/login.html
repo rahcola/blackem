@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
-{% block page_title %}| login{% endblock page_title %}
+{% block page_title %}login{% endblock page_title %}
 
-{% block super %}
+{% block left_col %}
+{% load webdesign %}
+{% lorem 3  p %}
+{% endblock left_col %}
+
+{% block right_col %}
 <h1>Blackem</h1>
 
 <p>Please login, or register if you don't have an account.</p>
@@ -18,4 +23,4 @@
 </form>
 <a href="/register">Register</a>
 
-{% endblock super %}
+{% endblock right_col %}

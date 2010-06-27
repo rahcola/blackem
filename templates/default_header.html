@@ -1,0 +1,3 @@
+<h1>Blackem</h1>
+{% if not home and not next %}<a href="{% url users.views.home %}">Home</a>{% endif %}
+{% if not no_logout %}<a href="{% url logout %}">Logout</a>{% endif %}

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}pantries{% endblock page_title %}
+
+{% block left_col %}
 <ul>
   {% for pantry in pantries %}
   <li><a href="{% url pantries.views.detail pantry_id=pantry.id %}">{{ pantry }}</a></li>
   {% endfor %}
 </ul>
-{% endblock super %}
+{% endblock left_col %}

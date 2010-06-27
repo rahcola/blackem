@@ -1,2 +1,8 @@
+{% extends "base.html" %}
+
+{% block page_title %} | 404{% endblock page_title %}
+
+{% block content %}
 <h1>404</h1>
 <p>Could not found: {{ request_path }}</p>
+{% endblock content %}

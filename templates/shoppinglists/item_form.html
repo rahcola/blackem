@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block page_title %}| add item {% endblock page_title %}
+{% block page_title %}add item {% endblock page_title %}
 
-{% block super %}
+{% block left_col %}
 <p>Choose a category:</p>
 <ul>
   {% for category in categories %}
@@ -19,7 +19,7 @@
 </ul>
 {% endif %}
 
-{% if product_id %}
+{% if form %}
   <form method="post" action="{% url shoppinglists.views.add_item shoppinglist_id=shoppinglist_id, category_id=category_id, product_id=product_id %}"> {% csrf_token %}
   <table>
     {{ form.as_table }}
@@ -27,5 +27,4 @@
   </table>
   </form>
 {% endif %}
-
-{% endblock super %}
+{% endblock left_col %}

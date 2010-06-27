@@ -1,21 +1,56 @@
 {% extends "base.html" %}
 
-{% block page_title %}| Home {% endblock page_title %}
+{% block page_title %}home{% endblock page_title %}
 
-{% block link_home %} {% endblock link_home %}
-{% block super %}
-<h2>Pantries</h2>
-  <ul>
-    {% for pantry in pantries %}
-    <li><a href="{% url pantries.views.detail pantry.id %}">{{ pantry }}</a></li>
-    {% endfor %}
-  </ul>
-  <p><a href="{% url pantries.views.new %}">Create a new one.</a></p>
-<h2>Shoppinglists</h2>
-  <ul>
-    {% for list in lists %}
-    <li><a href="{% url shoppinglists.views.detail list.id %}">{{ list }}</a></li>
-    {% endfor %}
-  </ul>
-  <p><a href="{% url shoppinglists.views.new %}">Create a new one.</a></p>
-{% endblock super %}
+{% block left_col %}
+<h1>Home</h1>
+<table id="home_lists">
+  <tr>
+    <th>Pantries</th>
+    <th>Shoppinglists</th>
+  </tr>
+  <tr>
+  <td>
+    <ul>
+      {% for pantry in pantries %}
+      <li><a href="{% url pantries.views.detail pantry.id %}">{{ pantry }}</a></li>
+      {% endfor %}
+    <li>
+    <a href="{% url pantries.views.new %}"><img class="action_icon" src="/site-media/add_icon.png" alt="Create a new one." /></a>
+    </li>
+    </ul>
+  </td>
+
+  <td>
+    <ul>
+      {% for list in lists %}
+      <li><a href="{% url shoppinglists.views.detail list.id %}">{{ list }}</a></li>
+      {% endfor %}
+    <li>
+    <a href="{% url shoppinglists.views.new %}"><img class="action_icon" src="/site-media/add_icon.png" alt="Create a new one." /></a>
+    </li>
+    </ul>
+  </td>
+
+  </tr>
+</table>
+{% endblock left_col %}
+{% block right_col %}
+{% if admin %}
+<h1>Admin stuff</h1>
+<ul>
+  <li>
+  <a href="{% url products.views.new_product %}">Add a product.</a>
+  </li>
+  <li>
+  <a href="/products">List all products.</a>
+  </li>
+  <li>
+  <a href="{% url products.views.new_category %}">Add a category.</a>
+  </li>
+  <li>
+  <a href="/products/categories">List all categories.</a>
+  </li>
+</ul>
+{% endif %}
+{% endblock right_col %}

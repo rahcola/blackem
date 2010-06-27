@@ -7,11 +7,16 @@ from shoppinglists.models import Shoppinglist
 
 @login_required
 def home(request):
+    admin = False
+    if request.user.has_perm('products.add_product'):
+        admin = True
     pantries = Pantry.objects.filter(owner=request.user)
     lists = Shoppinglist.objects.filter(pantry__owner=request.user)
     return render_to_response('users/home.html', {'pantries': pantries,
                                                   'lists': lists,
-                                                  'logged': True})
+                                                  'logged': True,
+                                                  'admin': admin,
+                                                  'home': True})
 
 def register(request):
     if request.user.is_authenticated():

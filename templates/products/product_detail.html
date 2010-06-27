@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title%}{{ object}}{% endblock page_title%}
+
+{% block left_col %}
 <h1>{{ object }}</h1>
 <p>Valmistaja: {{ object.manufacturer }}</p>
 <p>Kategoriat:</p>
 <ul>
   {% for category in object.categories.all %}
-  <li><a href="./categories/{{ category.id }}">{{ category }}</a></li>
+  <li><a href="/products/categories/{{ category.id }}">{{ category }}</a></li>
   {% endfor %}
 </ul>
-{% endblock super %}
+{% if admin %}
+<a href="{% url products.views.delete_product object.id %}">Delete</a>
+<a href="{% url products.views.change_product object.id %}">Change</a>
+{% endif %}
+{% endblock left_col %}

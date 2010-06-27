@@ -1,13 +1,51 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}shoppinglist {{ list }}{% endblock page_title %}
+
+{% block scripts %}
+<script type="text/javascript">
+  function select_all()
+  {
+    var form = document.getElementById("frm");
+    var selected = document.getElementById("select").checked;
+    for (var i=0; i<form.length; i++)
+    {
+      if (form.elements[i].type == "checkbox" &&
+          form.elements[i].id != "select")
+      {
+        form.elements[i].checked = selected;
+      }
+    }
+  }
+</script>
+{% endblock scripts %}
+
+{% block left_col %}
 <h1>{{ list }}</h1>
-<ul>
-  {% for item in list.item_set.all %}
-  <li><a href="/products/{{ item.product.id }}">{{ item.product }}</a> {{ item.amount|floatformat }} {{ item.product.unit }}
-  <a href="{% url shoppinglists.views.delete_item shoppinglist_id=list.id, item_id=item.id %}">Delete</a></li>
+<form id="frm" method="post" action="{% url shoppinglists.views.detail list.id %}">
+  {% csrf_token %}
+  {{ formset.management_form }}
+<table>
+  {% for item, form in items %}
+  <tr>
+    <td>
+      <a href="/products/{{ item.product.id }}">{{ item.product }}</a>
+      {{ item.amount|floatformat }} {{ item.product.unit }}
+    </td>
+    <td>
+      <a href="{% url shoppinglists.views.delete_item shoppinglist_id=list.id, item_id=item.id %}">
+        <img class="action_icon" src="/site-media/remove_icon.png" alt="Delete" /></a>
+    </td>
+  <td>{{ form.id }}{{ form.bought }}</td>
+  </tr>
   {% endfor %}
-</ul>
+  <tr><td></td><td><label for="select" form="frm">Select all</label></td><td><input type="checkbox" id="select" onclick="select_all()" /></td></tr>
+  <tr><td></td><td></td><td><input type="submit" value="Bought" /></td></tr>
+</table>
+</form>
+{% endblock left_col %}
+
+{% block right_col %}
 <p><a href="{% url shoppinglists.views.add_item shoppinglist_id=list.id %}">Add a new item to shoppinglist.</a></p>
 <p><a href="{% url shoppinglists.views.delete shoppinglist_id=list.id %}">Delete this shoppinglist.</a></p>
-{% endblock super %}
+{% endblock right_col %}

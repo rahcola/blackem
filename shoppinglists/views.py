@@ -1,34 +1,59 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 from django.template import RequestContext
-from pantries.models import Pantry
+from pantries.models import Pantry, Content
 from products.models import Category, Product
-from shoppinglists.models import Shoppinglist, Item, ShoppinglistForm, ItemForm, CheckItemForm
+from shoppinglists.models import Shoppinglist, Item, ShoppinglistForm, ItemForm
 
 @login_required
 def detail(request, shoppinglist_id):
-    if request.method = 'POST':
-        pass
-    else:
-        list = get_object_or_404(Shoppinglist, pantry__owner=request.user,
-                                 pk=shoppinglist_id)
-        return render_to_response('shoppinglists/shoppinglist_detail.html',
-                                  {'list': list,
-                                   'logged': True})
+    CheckItemFormSet = modelformset_factory(Item, extra=0, fields=('bought',))
+    if request.method == 'POST':
+        formset = CheckItemFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset.forms:
+                if form.cleaned_data['bought']:
+                    item = get_object_or_404(Item,
+                                             pk=form.cleaned_data['id'].id,
+                                             shoppinglist__pantry__owner=request.user)
+                    if not item.bought:
+                        try:
+                            content = Content.objects.get(
+                                product=form.cleaned_data['id'].product
+                            )
+                            content.amount += item.amount
+                        except ObjectDoesNotExist:
+                            content = Content(pantry=item.shoppinglist.pantry,
+                                              product=item.product,
+                                              amount=item.amount)
+                        content.save()
+                    item.delete()
+
+    list = get_object_or_404(Shoppinglist,
+                             pantry__owner=request.user,
+                             pk=shoppinglist_id)
+    formset = CheckItemFormSet(queryset=Item.objects.filter(shoppinglist=list))
+    return render_to_response('shoppinglists/shoppinglist_detail.html',
+                              {'items': zip(list.item_set.all(), formset.forms),
+                               'formset': formset,
+                               'list': list,
+                               'logged': True},
+                                context_instance=RequestContext(request))
 
 @login_required
 def new(request):
     if request.method == 'POST':
         form = ShoppinglistForm(request.POST, my_user=False)
         if form.is_valid():
-            try:
-                list = Shoppinglist(name=form.cleaned_data['name'],
-                                    pantry=form.cleaned_data['pantry'])
-                list.save()
-                return redirect('blackem.users.views.home')
-            except ObjectDoesNotExist:
-                return redirect('blackem.users.views.home')
+            pantry = get_object_or_404(Pantry,
+                                       pk=form.cleaned_data['pantry'].id)
+            list = Shoppinglist(name=form.cleaned_data['name'],
+                                pantry=pantry)
+            list.save()
+            return redirect('blackem.users.views.home')
     else:
         form = ShoppinglistForm(my_user=request.user)
     return render_to_response('shoppinglists/shoppinglist_form.html',
@@ -43,37 +68,40 @@ def delete(request, shoppinglist_id):
     return redirect('blackem.users.views.home')
 
 def add_item(request, shoppinglist_id, category_id=False, product_id=False):
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            shoppinglist = get_object_or_404(
+                Shoppinglist,
+                pk=shoppinglist_id,
+                pantry__owner=request.user
+            )
+            product = get_object_or_404(Product, pk=product_id)
+            try:
+                item = Item.objects.get(shoppinglist=shoppinglist,
+                                        product=product)
+                item.amount += form.cleaned_data['amount']
+            except ObjectDoesNotExist:
+                item = Item(shoppinglist=shoppinglist,
+                            product=product,
+                            amount=form.cleaned_data['amount'],
+                            bought=False)
+            item.save()
+        return redirect('shoppinglists.views.detail', shoppinglist_id)
+
     response_dict = {'shoppinglist_id': shoppinglist_id,
                      'categories': Category.objects.all(),
                      'logged': False}
-    if product_id:
-            if request.method == 'POST':
-                form = ItemForm(request.POST)
-                if form.is_valid():
-                    try:
-                        item = Item(shoppinglist=Shoppinglist.objects.get(
-                                        pk=shoppinglist_id,
-                                        pantry__owner=request.user),
-                                    product=Product.objects.get(pk=product_id),
-                                    amount=form.cleaned_data["amount"],
-                                    bought=False)
-                        item.save()
-                        return redirect('shoppinglists.views.detail',
-                                        shoppinglist_id)
-                    except ObjectDoesNotExist:
-                        return redirect('blackem.users.views.home')
-            else:
-                form = ItemForm()
-            response_dict.update(
-                {'form': form,
-                 'product_id': product_id}
-            )
     if category_id:
         response_dict.update(
             {'category_id': category_id,
              'products': Product.objects.filter(categories__pk=category_id)}
         )
-
+    if product_id:
+        response_dict.update(
+            {'form': ItemForm(),
+             'product_id': product_id}
+        )
     return render_to_response('shoppinglists/item_form.html',
                               response_dict,
                               context_instance=RequestContext(request))

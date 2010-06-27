@@ -28,10 +28,11 @@ class Item(models.Model):
     amount = models.FloatField()
     bought = models.BooleanField()
 
+    def __unicode__(self):
+        return u"{0} {1} of {2} in {3}".format(self.amount, self.product.unit, self.product, self.shoppinglist)
+
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ('amount',)
 
-class CheckItemForm(forms.Form):
-    bought = forms.BooleanField(required=False)

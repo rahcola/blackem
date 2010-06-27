@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 
-{% block super %}
+{% block page_title %}pantry {{ pantry }}{% endblock page_title %}
+
+{% block left_col %}
 <h1>{{ pantry }}</h1>
 <ul>
   {% for content in pantry.content_set.all %}
-  <li><a href="/products/{{ content.product.id }}">{{ content.product }}</a> {{ content.amount|floatformat }} {{ content.product.unit }}
-  <a href="{% url pantries.views.delete_content pantry_id=pantry.id, content_id=content.id %}">Delete</a></li>
+  <li><a href="/products/{{ content.product.id }}">{{ content.product }}</a>
+  {{ content.amount|floatformat }} {{ content.product.unit }}
+  <a href="{% url pantries.views.delete_content pantry_id=pantry.id, content_id=content.id %}">
+    <img class="action_icon" src="/site-media/remove_icon.png" alt="Delete" />
+  </a>
+  </li>
   {% endfor %}
 </ul>
+{% endblock left_col %}
+{% block right_col %}
 <p><a href="{% url pantries.views.add_content pantry_id=pantry.id %}">Add a new product to pantry.</a></p>
 <p><a href="{% url pantries.views.delete pantry_id=pantry.id %}">Delete this pantry.</a></p>
-{% endblock super %}
+{% endblock right_col %}

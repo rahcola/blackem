@@ -2,12 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css" />
-    <title>Blackem {% block page_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/site-media/style.css" />
+    {% block scripts %}{% endblock scripts %}
+    <title>Blackem | {% block page_title %}{% endblock %}</title>
   </head>
   <body>
-    {% if logged %}<a href="{% url logout %}">Logout</a>{% endif %}
-    {% block link_home %}<a href="{% url users.views.home %}">Home</a>{% endblock %}
-    {% block super %}{% endblock %}
+    <div id="page">
+
+    <div id="header">
+    {% block header %}
+    {% include "default_header.html" %}
+    {% endblock header%}
+    </div>
+
+    <div id="col_container">
+    <div id="content">
+    {% block content %}
+      <div id="left_col">
+        {% block left_col %}jee{% endblock left_col %}
+      </div>
+
+      <div id="right_col">
+        {% block right_col %}{% endblock right_col %}
+      </div>
+    {% endblock content%}
+    </div>
+    </div>
+
+    </div>
   </body>
 </html>
