@@ -2,7 +2,7 @@ from django.db import models
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    manufacturer = models.CharField(max_length=100)
+    manufacturer = models.CharField(max_length=100, blank=True)
     categories = models.ManyToManyField('Category')
     unit = models.CharField(max_length=100)
 

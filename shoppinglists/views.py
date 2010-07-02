@@ -23,12 +23,13 @@ def detail(request, shoppinglist_id):
             for form in formset.forms:
                 if form.cleaned_data['bought']:
                     item = get_object_or_404(Item,
-                                             pk=form.cleaned_data['id'].id,
+                                             pk=form.cleaned_data['id'].pk,
                                              shoppinglist__pantry__owner=request.user)
                     if not item.bought:
                         try:
                             content = Content.objects.get(
-                                product=form.cleaned_data['id'].product
+                                product=form.cleaned_data['id'].product,
+                                pantry=Shoppinglist.objects.get(pk=shoppinglist_id)
                             )
                             content.amount += item.amount
                         except ObjectDoesNotExist:

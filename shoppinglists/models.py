@@ -8,7 +8,7 @@ class Shoppinglist(models.Model):
     pantry = models.ForeignKey(Pantry)
 
     def __unicode__(self):
-        return unicode(self.name)
+        return u"{0} for {1}".format(self.name, self.pantry)
 
 class ShoppinglistForm(forms.ModelForm):
 
@@ -32,6 +32,12 @@ class Item(models.Model):
         return u"{0} {1} of {2} in {3}".format(self.amount, self.product.unit, self.product, self.shoppinglist)
 
 class ItemForm(forms.ModelForm):
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount < 0:
+            raise forms.ValidationError("No negative amounts.")
+        return amount
+
     class Meta:
         model = Item
         fields = ('amount',)
