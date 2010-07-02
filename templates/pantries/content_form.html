@@ -11,7 +11,7 @@
 </ul>
 
 {% if category_id %}
-<p>Choose a product:</p>
+<p>Choose a product from {{ category }}:</p>
 <ul>
   {% for product in products %}
   <li><a href="{% url pantries.views.add_content pantry_id=pantry_id, category_id=category_id, product_id=product.id %}">{{ product }}</a></li>
@@ -22,7 +22,7 @@
 {% if product_id %}
   <form method="post" action="{% url pantries.views.add_content pantry_id=pantry_id, category_id=category_id, product_id=product_id %}"> {% csrf_token %}
   <table>
-    {{ form.as_table }}
+    <tr><th>{{ form.amount.label_tag }}</th><td>{{ form.amount }}</td><td>of {{ product }}</td></tr>
     <tr><th><input type="submit" value="Submit" /></th></tr>
   </table>
   </form>

@@ -85,12 +85,14 @@ def add_content(request, pantry_id, category_id=False, product_id=False):
     if category_id:
         response_dict.update(
             {'category_id': category_id,
+             'category': Category.objects.get(pk=category_id),
              'products': Product.objects.filter(categories__pk=category_id)}
         )
 
     if product_id:
         response_dict.update(
             {'form': ContentForm(),
+             'product': Product.objects.get(pk=product_id),
              'product_id': product_id}
         )
     return render_to_response('pantries/content_form.html',

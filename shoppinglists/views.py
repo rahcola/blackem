@@ -28,8 +28,8 @@ def detail(request, shoppinglist_id):
                     if not item.bought:
                         try:
                             content = Content.objects.get(
-                                product=form.cleaned_data['id'].product,
-                                pantry=Shoppinglist.objects.get(pk=shoppinglist_id)
+                                product=item.product,
+                                pantry=item.shoppinglist.pantry
                             )
                             content.amount += item.amount
                         except ObjectDoesNotExist:
@@ -123,11 +123,13 @@ def add_item(request, shoppinglist_id, category_id=False, product_id=False):
     if category_id:
         response_dict.update(
             {'category_id': category_id,
+             'category': Category.objects.get(pk=category_id),
              'products': Product.objects.filter(categories__pk=category_id)}
         )
     if product_id:
         response_dict.update(
             {'form': ItemForm(),
+             'product': Product.objects.get(pk=product_id),
              'product_id': product_id}
         )
     return render_to_response('shoppinglists/item_form.html',
